@@ -11,7 +11,7 @@ function main() {
   let playerChoice;
   let playCode;
 
-  while (playerChoice != 0 || playCode != 0) {
+  outer: while (playerChoice != 0 || playCode != 0) {
     let scoreContainer = [playerScore, computerScore];
     playerChoice = getPlayerChoice(scoreContainer);
     let computerChoice = getComputerChoice();
@@ -32,10 +32,10 @@ function main() {
         alert(`Both players tied!${postfixStr}`);
         break;
       case EXIT_NUMBER:
-        break;
+        break outer;
       default:
         console.error("playCode is invalid in switch");
-        break;
+        break outer;
     }
   }
   alert("Thanks for playing! :)");
