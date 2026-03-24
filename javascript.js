@@ -84,9 +84,9 @@ function getPlayerChoice(scoreContainer) {
 }
 
 function roundAction(computerChoice, computerWinChoice, computerLoseChoice) {
-  if (computerChoice == computerWinChoice) {
+  if (computerChoice === computerWinChoice) {
     return COMPUTER_WIN_NUMBER; // computer win
-  } else if (computerChoice == computerLoseChoice) {
+  } else if (computerChoice === computerLoseChoice) {
     return PLAYER_WIN_NUMBER; // player win
   } else {
     return TIE_NUMBER; // no one wins
