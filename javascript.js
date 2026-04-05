@@ -23,50 +23,49 @@ function main() {
     let target = e.target;
     let playerChoice;
     let enemyChoice = Math.floor(Math.random() * (4 - 1) + 1); // selects 1 - 3
+    let isClicked = false; // handle button clicks in between the marked children
 
     switch (
       target.id // retrieve player action
     ) {
       case "rockBtn":
         playerChoice = ROCK_CHOICE;
+        isClicked = true;
         break;
       case "paperBtn":
         playerChoice = PAPER_CHOICE;
+        isClicked = true;
         break;
       case "scissorsBtn":
         playerChoice = SCISSORS_CHOICE;
-        break;
-      default:
-        playerChoice = ROCK_CHOICE; // if clicking in between the button, default
+        isClicked = true;
         break;
     }
 
     console.log(playerChoice, target.id);
-    playerChoiceDisplay.textContent = getNameFromChoice(playerChoice);
-    enemyChoiceDisplay.textContent = getNameFromChoice(enemyChoice);
+    if (isClicked) {
+      playerChoiceDisplay.textContent = getNameFromChoice(playerChoice);
+      enemyChoiceDisplay.textContent = getNameFromChoice(enemyChoice);
 
-    let gameCode = playGame(playerChoice, enemyChoice);
+      let gameCode = playGame(playerChoice, enemyChoice);
 
-    switch (gameCode) {
-      case ENEMY_WIN_CODE:
-        mainTextDisplay.textContent = `Enemy wins this round! ${POSTFIX_STR}`;
-        enemyScore++;
-        break;
-      case PLAYER_WIN_CODE:
-        mainTextDisplay.textContent = `Player wins this round! ${POSTFIX_STR}`;
-        playerScore++;
-        break;
-      case TIE_CODE:
-        mainTextDisplay.textContent = `Both players tied! ${POSTFIX_STR}`;
-        break;
+      switch (gameCode) {
+        case ENEMY_WIN_CODE:
+          mainTextDisplay.textContent = `Enemy wins this round! ${POSTFIX_STR}`;
+          enemyScore++;
+          break;
+        case PLAYER_WIN_CODE:
+          mainTextDisplay.textContent = `Player wins this round! ${POSTFIX_STR}`;
+          playerScore++;
+          break;
+        case TIE_CODE:
+          mainTextDisplay.textContent = `Both players tied! ${POSTFIX_STR}`;
+          break;
+      }
+
+      playerScoreDisplay.textContent = playerScore;
+      enemyScoreDisplay.textContent = enemyScore;
     }
-
-    playerScoreDisplay.textContent = playerScore;
-    enemyScoreDisplay.textContent = enemyScore;
-
-    choiceCtn.removeEventListener("click", () => {
-      alert("removed");
-    });
   });
 }
 
