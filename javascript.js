@@ -1,112 +1,106 @@
-const ROCK_NUMBER = (COMPUTER_WIN_NUMBER = 1);
-const PAPER_NUMBER = (PLAYER_WIN_NUMBER = 2);
-const SCISSORS_NUMBER = (TIE_NUMBER = 3);
-const EXIT_NUMBER = (ERROR_NUMBER = 0);
+const ROCK_CHOICE = (ENEMY_WIN_CODE = 1);
+const PAPER_CHOICE = (PLAYER_WIN_CODE = 2);
+const SCISSORS_CHOICE = (TIE_CODE = 3);
 
-// main();
+main();
 
 function main() {
   let playerScore = 0;
-  let computerScore = 0;
-  let playerChoice;
-  let playCode;
+  let enemyScore = 0;
+  const POSTFIX_STR = "Select a button!";
+  const mainTextDisplay = document.querySelector("h2");
+  const playerScoreDisplay = document.getElementById("playerScoreSpan");
+  const enemyScoreDisplay = document.getElementById("enemyScoreSpan");
+  const choiceCtn = document.querySelector("div");
+  const playerChoiceDisplay = document.getElementById("playerChoice");
+  const enemyChoiceDisplay = document.getElementById("enemyChoice");
 
-  outer: while (playerChoice != 0 || playCode != 0) {
-    let scoreContainer = [playerScore, computerScore];
-    playerChoice = getPlayerChoice(scoreContainer);
-    let computerChoice = getComputerChoice();
-    playCode = playRound(playerChoice, computerChoice);
+  mainTextDisplay.textContent = `You are the player. ${POSTFIX_STR}`;
+  playerScoreDisplay.textContent = playerScore;
+  enemyScoreDisplay.textContent = enemyScore;
 
-    let postfixStr = `\nPlayer Choice: ${getNamedAction(playerChoice)}\nComputer Choice: ${getNamedAction(computerChoice)}`;
+  choiceCtn.addEventListener("click", (e) => {
+    let target = e.target;
+    let playerChoice;
+    let enemyChoice = Math.floor(Math.random() * (4 - 1) + 1); // selects 1 - 3
 
-    switch (playCode) {
-      case COMPUTER_WIN_NUMBER:
-        alert(`Computer wins!${postfixStr}`);
-        computerScore++;
+    switch (
+      target.id // retrieve player action
+    ) {
+      case "rockBtn":
+        playerChoice = ROCK_CHOICE;
         break;
-      case PLAYER_WIN_NUMBER:
-        alert(`Player wins!${postfixStr}`);
+      case "paperBtn":
+        playerChoice = PAPER_CHOICE;
+        break;
+      case "scissorsBtn":
+        playerChoice = SCISSORS_CHOICE;
+        break;
+    }
+    playerChoiceDisplay.textContent = getNameFromChoice(playerChoice);
+    enemyChoiceDisplay.textContent = getNameFromChoice(enemyChoice);
+
+    let gameCode = playGame(playerChoice, enemyChoice);
+
+    switch (gameCode) {
+      case ENEMY_WIN_CODE:
+        mainTextDisplay.textContent = `Enemy wins this round! ${POSTFIX_STR}`;
+        enemyScore++;
+        break;
+      case PLAYER_WIN_CODE:
+        mainTextDisplay.textContent = `Player wins this round! ${POSTFIX_STR}`;
         playerScore++;
         break;
-      case TIE_NUMBER:
-        alert(`Both players tied!${postfixStr}`);
+      case TIE_CODE:
+        mainTextDisplay.textContent = `Both players tied! ${POSTFIX_STR}`;
         break;
-      case EXIT_NUMBER:
-        break outer;
-      default:
-        console.error("playCode is invalid in switch");
-        break outer;
     }
-  }
-  alert("Thanks for playing! :)");
+
+    playerScoreDisplay.textContent = playerScore;
+    enemyScoreDisplay.textContent = enemyScore;
+  });
 }
 
-function getNamedAction(ACTION_NUMBER) {
-  switch (ACTION_NUMBER) {
-    case ROCK_NUMBER:
+function getNameFromChoice(choice) {
+  switch (choice) {
+    case ROCK_CHOICE:
       return "Rock";
-    case PAPER_NUMBER:
+      break;
+    case PAPER_CHOICE:
       return "Paper";
-    case SCISSORS_NUMBER:
-      return "Scissors";
+      break;
+    case SCISSORS_CHOICE:
+      return "Scissor";
+      break;
     default:
-      return "N/A";
+      return "Not A Valid Choice";
+      break;
   }
 }
 
-function getComputerChoice() {
-  return Math.floor(Math.random() * (4 - 1) + 1); // 1 - 3
-}
-
-// Get player choice as a number
-function getPlayerChoice(scoreContainer) {
-  let prefixTextPrompt = "Make your option!";
-
-  while (true) {
-    let c = parseInt(
-      prompt(
-        `${prefixTextPrompt}\nSCORE: Player: ${scoreContainer[0]}, Computer: ${scoreContainer[1]}\nType in a number.\n${ROCK_NUMBER}) Rock\n${PAPER_NUMBER}) Paper\n${SCISSORS_NUMBER}) Scissors\n${EXIT_NUMBER}) Quit`,
-      ),
-    );
-
-    switch (c) {
-      case ROCK_NUMBER:
-      case PAPER_NUMBER:
-      case SCISSORS_NUMBER:
-      case EXIT_NUMBER:
-        return c;
-      default:
-        prefixTextPrompt = "Not a correct choice.";
-        break;
+function playGame(pChoice, eChoice) {
+  function roundAction(enemyChoice, enemyWinChoice, enemyLoseChoice) {
+    if (enemyChoice === enemyWinChoice) {
+      return ENEMY_WIN_CODE;
+    } else if (enemyChoice === enemyLoseChoice) {
+      return PLAYER_WIN_CODE;
+    } else {
+      return TIE_CODE;
     }
-    continue;
   }
-}
 
-function roundAction(computerChoice, computerWinChoice, computerLoseChoice) {
-  if (computerChoice === computerWinChoice) {
-    return COMPUTER_WIN_NUMBER; // computer win
-  } else if (computerChoice === computerLoseChoice) {
-    return PLAYER_WIN_NUMBER; // player win
-  } else {
-    return TIE_NUMBER; // no one wins
-  }
-}
-
-function playRound(playerChoice, computerChoice) {
-  // based off of playerScore, extrapolate results from computerscore
-
-  switch (playerChoice) {
-    case ROCK_NUMBER: // rock
-      return roundAction(computerChoice, PAPER_NUMBER, SCISSORS_NUMBER);
-    case PAPER_NUMBER: // paper
-      return roundAction(computerChoice, SCISSORS_NUMBER, ROCK_NUMBER);
-    case SCISSORS_NUMBER: // scissors
-      return roundAction(computerChoice, ROCK_NUMBER, PAPER_NUMBER);
-    case EXIT_NUMBER:
-      return EXIT_NUMBER;
-    default:
-      console.error("Player choice is cooked");
-      return ERROR_NUMBER;
+  switch (
+    // return the corresponding game code given the world state choices
+    pChoice
+  ) {
+    case ROCK_CHOICE:
+      return roundAction(eChoice, SCISSORS_CHOICE, PAPER_CHOICE);
+      break;
+    case PAPER_CHOICE:
+      return roundAction(eChoice, SCISSORS_CHOICE, ROCK_CHOICE);
+      break;
+    case SCISSORS_CHOICE:
+      return roundAction(eChoice, ROCK_CHOICE, PAPER_CHOICE);
+      break;
   }
 }
