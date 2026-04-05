@@ -3,7 +3,7 @@ const PAPER_NUMBER = (PLAYER_WIN_NUMBER = 2);
 const SCISSORS_NUMBER = (TIE_NUMBER = 3);
 const EXIT_NUMBER = (ERROR_NUMBER = 0);
 
-main();
+// main();
 
 function main() {
   let playerScore = 0;

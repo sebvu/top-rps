@@ -6,7 +6,22 @@
     <script src="./javascript.js"></script>
   </head>
 
+  <h1>Minimal Rock Paper Scissors</h1>
+  <h2>You are the player. Select a button!</h2>
+  <h3>
+    PlayerScore: <span id="playerScoreSpan">0</span> | EnemyScore:
+    <span id="enemyScoreSpan">0</span>
+  </h3>
   <body>
-    <p>text</p>
+    <div id="btnContainer">
+      <button id="rockBtn">Rock</button>
+      <button id="paperBtn">Paper</button>
+      <button id="scissorsBtn">Scissors</button>
+    </div>
+
+    <div id="displayContainer">
+      <p>Player Choice: <span id="playerChoice">N/A</span></p>
+      <p>Enemy Choice: <span id="enemyChoice">N/A</span></p>
+    </div>
   </body>
 </html>
