@@ -36,7 +36,12 @@ function main() {
       case "scissorsBtn":
         playerChoice = SCISSORS_CHOICE;
         break;
+      default:
+        playerChoice = ROCK_CHOICE; // if clicking in between the button, default
+        break;
     }
+
+    console.log(playerChoice, target.id);
     playerChoiceDisplay.textContent = getNameFromChoice(playerChoice);
     enemyChoiceDisplay.textContent = getNameFromChoice(enemyChoice);
 
@@ -58,6 +63,10 @@ function main() {
 
     playerScoreDisplay.textContent = playerScore;
     enemyScoreDisplay.textContent = enemyScore;
+
+    choiceCtn.removeEventListener("click", () => {
+      alert("removed");
+    });
   });
 }
 
