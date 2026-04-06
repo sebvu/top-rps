@@ -66,6 +66,20 @@ function main() {
       playerScoreDisplay.textContent = playerScore;
       enemyScoreDisplay.textContent = enemyScore;
     }
+
+    if (playerScore == 5 || enemyScore == 5) {
+      for (const btn of choiceCtn.children) {
+        btn.disabled = true;
+      }
+
+      if (playerScore == 5 && enemyScore == 5) {
+        mainTextDisplay.textContent = "uhhh, how did you tie wtf? congrats?";
+      } else if (playerScore == 5) {
+        mainTextDisplay.textContent = "PLAYER WINS! GOOD JOB :D";
+      } else {
+        mainTextDisplay.textContent = "ENEMY WINS... you suck wtf";
+      }
+    }
   });
 }
 
